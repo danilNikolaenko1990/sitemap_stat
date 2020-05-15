@@ -1,0 +1,4 @@
+.idea/
+config/dev.yml
+site_analyzer
+coverage.out

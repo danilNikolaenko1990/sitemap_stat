@@ -1,0 +1,34 @@
+package parser
+
+import (
+	"encoding/xml"
+	log "github.com/sirupsen/logrus"
+)
+
+type Result struct {
+	Sites []string
+}
+
+func Parse(data string) (*Result, error) {
+	log.Println("parsing xml")
+	urls := urlSet{}
+	sitemaps := sitemapindex{}
+
+	if err := xml.Unmarshal([]byte(data), &urls); err == nil {
+		sites := make([]string, len(urls.Urls))
+		for key, url := range urls.Urls {
+			sites[key] = url.Loc
+		}
+
+		return &Result{Sites: sites}, nil
+	} else if err := xml.Unmarshal([]byte(data), &sitemaps); err == nil {
+		sites := make([]string, len(sitemaps.Sitemaps))
+		for key, url := range sitemaps.Sitemaps {
+			sites[key] = url.Loc
+		}
+
+		return &Result{Sites: sites}, nil
+	} else {
+		return nil, err
+	}
+}
