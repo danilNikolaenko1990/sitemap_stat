@@ -19,7 +19,7 @@ const (
 	OutputFileName = "reporting.csv"
 )
 
-var workers = 100 //todo get from env or commandline
+var workers = 4 //todo get from env or commandline
 
 func init() {
 	log.SetOutput(os.Stdout)
@@ -30,7 +30,7 @@ func main() {
 	fetcher := net.NewFetcher()
 	measurer := measure.NewMeasurer()
 	parser := parsing.NewParser()
-
+	//I dont want to add any di container for 3 dependencies only=)
 	analyzer := stat.NewAnalyzer(fetcher, measurer, parser)
 
 	results, tasksCount, err := analyzer.Analyze(Url, workers)
