@@ -4,13 +4,8 @@ import (
 	"github.com/cheggaaa/pb/v3"
 	log "github.com/sirupsen/logrus"
 	"os"
-	"runtime"
-	"site_analyzer/domain"
-	"site_analyzer/measure"
-	"site_analyzer/net"
-	"site_analyzer/parsing"
-	"site_analyzer/reporting"
-	"site_analyzer/stat"
+	"sitemap_stat/cmd"
+	"sitemap_stat/domain"
 	"strconv"
 )
 
@@ -26,30 +21,33 @@ func init() {
 }
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
-	fetcher := net.NewFetcher()
-	measurer := measure.NewMeasurer()
-	parser := parsing.NewParser()
-	//I dont want to add any di container for 3 dependencies only=)
-	analyzer := stat.NewAnalyzer(fetcher, measurer, parser)
+	cmd.Execute()
 
-	results, tasksCount, err := analyzer.Analyze(Url, workers)
-	if err != nil {
-		log.Errorf("error analyzing %s", err.Error())
-	}
-	bar := createProgressBar(tasksCount)
 
-	rep := createReport()
-	for result := range results {
-		row := createReportRow(result)
-		rep = append(rep, row)
-		bar.Increment()
-	}
-	log.Infof("writing reporting to file %s", OutputFileName)
-	err = reporting.Csv(OutputFileName, rep)
-	if err != nil {
-		log.Errorf("error wile writing reporting %s", err.Error())
-	}
+	//runtime.GOMAXPROCS(runtime.NumCPU())
+	//fetcher := net.NewFetcher()
+	//measurer := measure.NewMeasurer()
+	//parser := parsing.NewParser()
+	////I dont want to add any di container for 3 dependencies only=)
+	//analyzer := stat.NewAnalyzer(fetcher, measurer, parser)
+	//
+	//results, tasksCount, err := analyzer.Analyze(Url, workers)
+	//if err != nil {
+	//	log.Errorf("error analyzing %s", err.Error())
+	//}
+	//bar := createProgressBar(tasksCount)
+	//
+	//rep := createReport()
+	//for result := range results {
+	//	row := createReportRow(result)
+	//	rep = append(rep, row)
+	//	bar.Increment()
+	//}
+	//log.Infof("writing reporting to file %s", OutputFileName)
+	//err = reporting.Csv(OutputFileName, rep)
+	//if err != nil {
+	//	log.Errorf("error wile writing reporting %s", err.Error())
+	//}
 }
 
 func createReport() [][]string {

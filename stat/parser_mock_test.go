@@ -2,7 +2,7 @@ package stat
 
 import (
 	"errors"
-	"site_analyzer/domain"
+	"sitemap_stat/domain"
 )
 
 const (

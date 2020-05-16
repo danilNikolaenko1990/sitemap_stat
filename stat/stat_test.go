@@ -3,7 +3,7 @@ package stat
 import (
 	"errors"
 	"github.com/stretchr/testify/assert"
-	"site_analyzer/domain"
+	"sitemap_stat/domain"
 	"testing"
 )
 
