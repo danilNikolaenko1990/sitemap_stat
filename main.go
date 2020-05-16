@@ -4,16 +4,19 @@ import (
 	"github.com/cheggaaa/pb/v3"
 	log "github.com/sirupsen/logrus"
 	"os"
-	"site_analyzer/analyzer"
+	"runtime"
 	"site_analyzer/domain"
-	"site_analyzer/report"
+	"site_analyzer/measure"
+	"site_analyzer/net"
+	"site_analyzer/parsing"
+	"site_analyzer/reporting"
+	"site_analyzer/stat"
 	"strconv"
 )
 
 const (
-	//todo move url to env
-	Url            = "https://www.the-village.ru/"
-	OutputFileName = "report.csv"
+	Url            = ""
+	OutputFileName = "reporting.csv"
 )
 
 var workers = 100 //todo get from env or commandline
@@ -23,7 +26,17 @@ func init() {
 }
 
 func main() {
-	results, tasksCount := analyzer.Analyze(Url, workers)
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	fetcher := net.NewFetcher()
+	measurer := measure.NewMeasurer()
+	parser := parsing.NewParser()
+
+	analyzer := stat.NewAnalyzer(fetcher, measurer, parser)
+
+	results, tasksCount, err := analyzer.Analyze(Url, workers)
+	if err != nil {
+		log.Errorf("error analyzing %s", err.Error())
+	}
 	bar := createProgressBar(tasksCount)
 
 	rep := createReport()
@@ -32,10 +45,10 @@ func main() {
 		rep = append(rep, row)
 		bar.Increment()
 	}
-	log.Infof("writing report to file %s", OutputFileName)
-	err := report.Csv(OutputFileName, rep)
+	log.Infof("writing reporting to file %s", OutputFileName)
+	err = reporting.Csv(OutputFileName, rep)
 	if err != nil {
-		log.Errorf("error wile writing report %s", err.Error())
+		log.Errorf("error wile writing reporting %s", err.Error())
 	}
 }
 

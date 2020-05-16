@@ -1,4 +1,4 @@
-package fetcher
+package net
 
 import (
 	"errors"
@@ -7,7 +7,13 @@ import (
 	"net/http"
 )
 
-func GetBodyAsString(url string) (string, error) {
+type Fetcher struct{}
+
+func NewFetcher() *Fetcher {
+	return &Fetcher{}
+}
+
+func (f *Fetcher) GetBodyAsString(url string) (string, error) {
 	log.Println("getting xml via http")
 	resp, err := http.Get(url)
 	if err != nil {

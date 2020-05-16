@@ -1,11 +1,9 @@
-package report
+package reporting
 
 import (
 	"encoding/csv"
 	"fmt"
 	"os"
-	"site_analyzer/domain"
-	"strconv"
 )
 
 func Csv(filename string, dataToWrite [][]string) error {
@@ -26,20 +24,4 @@ func Csv(filename string, dataToWrite [][]string) error {
 		return fmt.Errorf("error while flushing dataToWrite %w", err)
 	}
 	return nil
-}
-
-func createReport() [][]string {
-	return [][]string{
-		{"Page", "response time in milliseconds", "http status", "time from start to first byte", "error"},
-	}
-}
-
-func createReportRow(result domain.ReportItem) []string {
-	return []string{
-		result.Site,
-		strconv.Itoa(result.ResponseTimeInMilliseconds),
-		strconv.Itoa(result.StatusCode),
-		strconv.Itoa(result.TimeFromStartToFirstByte),
-		result.Error,
-	}
 }

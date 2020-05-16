@@ -1,15 +1,18 @@
-package parser
+package parsing
 
 import (
 	"encoding/xml"
 	log "github.com/sirupsen/logrus"
+	"site_analyzer/domain"
 )
 
-type Result struct {
-	Sites []string
+type Parser struct{}
+
+func NewParser() *Parser {
+	return &Parser{}
 }
 
-func Parse(data string) (*Result, error) {
+func (p *Parser) Parse(data string) (*domain.ParsedResult, error) {
 	log.Println("parsing xml")
 	urls := urlSet{}
 	sitemaps := sitemapindex{}
@@ -20,14 +23,14 @@ func Parse(data string) (*Result, error) {
 			sites[key] = url.Loc
 		}
 
-		return &Result{Sites: sites}, nil
+		return &domain.ParsedResult{Sites: sites}, nil
 	} else if err := xml.Unmarshal([]byte(data), &sitemaps); err == nil {
 		sites := make([]string, len(sitemaps.Sitemaps))
 		for key, url := range sitemaps.Sitemaps {
 			sites[key] = url.Loc
 		}
 
-		return &Result{Sites: sites}, nil
+		return &domain.ParsedResult{Sites: sites}, nil
 	} else {
 		return nil, err
 	}

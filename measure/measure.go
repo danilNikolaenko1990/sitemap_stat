@@ -3,25 +3,21 @@ package measure
 import (
 	"net/http"
 	"net/http/httptrace"
+	"site_analyzer/domain"
 	"time"
 )
 
-type Result struct {
-	Site                       string
-	ResponseTimeInMilliseconds int
-	StatusCode                 int
-	Error                      string
-	TimeFromStartToFirstByte   int
+type Measurer struct{}
+
+func NewMeasurer() *Measurer {
+	return &Measurer{}
 }
 
-func Measure(url string) Result {
+func (*Measurer) Measure(url string) domain.MeasuringResult {
 	req, _ := http.NewRequest("GET", url, nil)
-	var start, connect, dns, tlsHandshake time.Time
-	result := Result{}
+	var start time.Time
+	result := domain.MeasuringResult{}
 	trace := &httptrace.ClientTrace{
-		DNSStart: func(dsi httptrace.DNSStartInfo) { dns = time.Now() },
-		TLSHandshakeStart: func() { tlsHandshake = time.Now() },
-		ConnectStart: func(network, addr string) { connect = time.Now() },
 		GotFirstResponseByte: func() {
 			result.TimeFromStartToFirstByte = toMilliseconds(time.Since(start))
 		},
