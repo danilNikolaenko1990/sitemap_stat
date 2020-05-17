@@ -3,7 +3,7 @@ package measure
 import (
 	"net/http"
 	"net/http/httptrace"
-	"site_analyzer/domain"
+	"sitemap_stat/domain"
 	"time"
 )
 

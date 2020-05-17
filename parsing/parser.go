@@ -3,7 +3,7 @@ package parsing
 import (
 	"encoding/xml"
 	log "github.com/sirupsen/logrus"
-	"site_analyzer/domain"
+	"sitemap_stat/domain"
 )
 
 type Parser struct{}

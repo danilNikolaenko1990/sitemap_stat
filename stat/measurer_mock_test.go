@@ -1,7 +1,7 @@
 package stat
 
 import (
-	"site_analyzer/domain"
+	"sitemap_stat/domain"
 )
 
 const (

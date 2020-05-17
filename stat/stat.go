@@ -2,7 +2,7 @@ package stat
 
 import (
 	log "github.com/sirupsen/logrus"
-	"site_analyzer/domain"
+	"sitemap_stat/domain"
 	"sync"
 )
 
