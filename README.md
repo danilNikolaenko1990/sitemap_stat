@@ -33,3 +33,4 @@ Run `./sitemap_stat --help` to find additional details.
 * https://github.com/spf13/cobra for cli 
 * https://github.com/sirupsen/logrus to do logging
 * https://github.com/cheggaaa/pb to show nice progress bar
+* https://github.com/stretchr/testify for tests
