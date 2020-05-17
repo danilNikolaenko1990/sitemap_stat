@@ -1,6 +1,7 @@
 package console_report
 
 import (
+	"fmt"
 	"github.com/cheggaaa/pb/v3"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -12,6 +13,7 @@ import (
 	"sitemap_stat/reporting"
 	"sitemap_stat/stat"
 	"strconv"
+	"time"
 )
 
 func init() {
@@ -27,23 +29,29 @@ func Report(sitemapUrl string, reportName string, workers int) {
 	analyzer := stat.NewAnalyzer(fetcher, measurer, parser)
 
 	results, tasksCount, err := analyzer.Analyze(sitemapUrl, workers)
+	fmt.Println()
 	if err != nil {
 		log.Errorf("error analyzing %s", err.Error())
 	}
 	bar := createProgressBar(tasksCount)
-
 	rep := createReport()
 	for result := range results {
 		row := createReportRow(result)
 		rep = append(rep, row)
 		bar.Increment()
 	}
+	waitUntilBarRenderingEnds()
 	log.Infof("writing reporting to file %s", reportName)
 	err = reporting.Csv(reportName, rep)
 	if err != nil {
 		log.Errorf("error wile writing reporting %s", err.Error())
 	}
 	log.Infof("file %s generated", reportName)
+}
+
+func waitUntilBarRenderingEnds() {
+	//ugly crutch because of slow progress bar rendering
+	time.Sleep(1 * time.Second)
 }
 
 func createReportRow(result domain.ReportItem) []string {
