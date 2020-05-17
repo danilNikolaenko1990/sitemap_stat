@@ -25,7 +25,7 @@ In the future I am planning to add web interface and expand data.
 * clone this repo
 * run `go build`
 * run `./sitemap_stat stat -u=https://www.google.com/gmail/sitemap.xml`
-After end of execution of the program you will find file named report.csv
+After end of execution of the program you will find file named report.csv.
 Run `./sitemap_stat --help` to find additional details.
 
 **Used packages**
