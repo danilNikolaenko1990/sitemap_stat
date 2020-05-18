@@ -21,7 +21,7 @@ This operation performs in parallel way. Result writes into result channel in "f
 Next step the program reads result channel and generates csv report.
 In the future I am planning to add web interface and expand data.  
 
-**How to launch in linux**
+**How to launch on linux**
 * clone this repo
 * run `go build`
 * run `./sitemap_stat stat -u=https://www.google.com/gmail/sitemap.xml`
